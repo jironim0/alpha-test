@@ -5,8 +5,6 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import Button from "@/components/ui/Button";
 import { createProduct } from "@/services/products";
-import { useAppDispatch } from "@/utils/hooks/hooks";
-import { addProducts } from "@/features/products/productsSlice";
 
 const validationSchema = Yup.object({
   title: Yup.string().required("Title is required"),

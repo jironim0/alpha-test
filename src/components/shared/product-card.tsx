@@ -6,13 +6,8 @@ import {
 } from "@/features/products/productsSlice";
 import { Product } from "@/features/products/types";
 import { useAppDispatch } from "@/utils/hooks/hooks";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, {
-  DetailedHTMLProps,
-  HTMLAttributes,
-  MouseEventHandler,
-} from "react";
+import React from "react";
 import { FcLike, FcLikePlaceholder } from "react-icons/fc";
 
 interface Props {
