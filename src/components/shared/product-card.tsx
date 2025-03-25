@@ -7,16 +7,22 @@ import {
 import { Product } from "@/features/products/types";
 import { useAppDispatch } from "@/utils/hooks/hooks";
 import Link from "next/link";
-import React from "react";
+import { useRouter } from "next/navigation";
+import React, {
+  DetailedHTMLProps,
+  HTMLAttributes,
+  MouseEventHandler,
+} from "react";
 import { FcLike, FcLikePlaceholder } from "react-icons/fc";
 
 interface Props {
   product: Product;
 }
 
-export const ProductCard: React.FC<Props> = React.memo(({ product }) => {
+export const ProductCard: React.FC<Props> = ({ product }) => {
   const [liked, setLiked] = React.useState(product.isFavorite);
   const dispatch = useAppDispatch();
+  const router = useRouter();
 
   React.useEffect(() => {
     setLiked(product.isFavorite);
@@ -33,37 +39,47 @@ export const ProductCard: React.FC<Props> = React.memo(({ product }) => {
     dispatch(deleteOneProduct(id));
   };
 
+  const handleRedirect = (event: React.MouseEvent<HTMLDivElement>) => {
+    const target = event.target as HTMLDivElement;
+
+    if (!["favorite", "delete"].includes(target.id)) {
+      router.push(`/products/${product.id}`);
+    }
+  };
+
   return (
     <div
+      id={"product_" + product.id}
       key={product.id}
-      className="flex flex-col bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 border border-gray-100"
+      className="flex flex-col cursor-pointer bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 border border-gray-100"
+      onClick={handleRedirect}
     >
-      <Link href={`/products/${product.id}`}>
-        <div>
-          <div className="relative w-full h-48 flex items-center justify-center bg-gray-100">
-            <img
-              src={product.image}
-              alt={product.title}
-              className="w-full h-full object-contain p-4"
-              loading="lazy"
-            />
-          </div>
-          <div className="p-4 flex flex-col flex-grow">
-            <p className="font-medium text-lg mb-2 line-clamp-2">
-              {product.title}
-            </p>
-            <span className="text-xl font-semibold text-gray-800 mb-4">
-              ${product.price}
-            </span>
-          </div>
+      <div>
+        <div className="relative w-full h-48 flex items-center justify-center bg-gray-100">
+          <img
+            src={product.image}
+            alt={product.title}
+            className="w-full h-full object-contain p-4"
+            loading="lazy"
+          />
         </div>
-      </Link>
+        <div className="p-4 flex flex-col flex-grow">
+          <p className="font-medium text-lg mb-2 line-clamp-2">
+            {product.title}
+          </p>
+          <span className="text-xl font-semibold text-gray-800 mb-4">
+            ${product.price}
+          </span>
+        </div>
+      </div>
 
       <div className="flex justify-between items-center mt-auto p-4">
         <button
           onClick={(e) => {
-            e.stopPropagation(), toggleLike();
+            e.stopPropagation();
+            toggleLike();
           }}
+          id="favorite"
           className="p-2 rounded-full hover:bg-gray-100 transition-colors duration-200"
         >
           {liked ? (
@@ -75,8 +91,10 @@ export const ProductCard: React.FC<Props> = React.memo(({ product }) => {
 
         <button
           onClick={(e) => {
-            e.stopPropagation(), handleDelete(product.id);
+            e.stopPropagation();
+            handleDelete(product.id);
           }}
+          id="delelte"
           className="p-2 rounded-full hover:bg-gray-100 transition-colors duration-200 active:scale-95"
         >
           <svg
@@ -97,4 +115,4 @@ export const ProductCard: React.FC<Props> = React.memo(({ product }) => {
       </div>
     </div>
   );
-});
+};

@@ -36,14 +36,10 @@ export const createProduct = async (data: NewProduct) => {
     throw error;
   }
 };
-//Так и не разобрался, почему обычный put запрос не работает на mockAPI. Проще было бы написать бэк самомоу и настроить под свой лад контроллер
-//Есть есть идеи то напишите кто-нибудь в личку, буду благодарен за помощь
+
 export const updateProduct = async (id: string, body: NewProduct) => {
   try {
-    const response = await axiosInstance.put(`/products?id=${id}`, {
-      ...body,
-      id: id
-    });
+    const response = await axiosInstance.put(`/products/${id}`, body);
 
     return response.data[0]; 
   } catch (error) {

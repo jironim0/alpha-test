@@ -74,6 +74,7 @@ export default function ProductsPage() {
     }
 
     filteredProducts = searchebleList(filteredProducts, value);
+    
     return productList(filteredProducts);
   };
 

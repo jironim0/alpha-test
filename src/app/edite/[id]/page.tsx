@@ -10,7 +10,6 @@ import {
   updateProduct,
 } from "@/services/products";
 import { useParams } from "next/navigation";
-import { Product } from "@/features/products/types";
 
 const validationSchema = Yup.object({
   title: Yup.string().required("Title is required"),

@@ -5,6 +5,8 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import Button from "@/components/ui/Button";
 import { createProduct } from "@/services/products";
+import { useAppDispatch } from "@/utils/hooks/hooks";
+import { addProducts } from "@/features/products/productsSlice";
 
 const validationSchema = Yup.object({
   title: Yup.string().required("Title is required"),
@@ -28,10 +30,11 @@ export default function CreateProductForm() {
     validationSchema,
     onSubmit: async (values) => {
       try {
-        const createdProduct = await createProduct(values)
+        await createProduct(values)
         alert("Продукт создан")
-      } catch (error) {
+      } catch (error){
         alert("Ошибка при создании продукта")
+        console.log(error)
       }
     },
   });
